@@ -1,55 +1,61 @@
 {
   "words": {
     "mate": {
-      "description": ""
+      "description": "friend, buddy, pal"
     },
     "proper": {
-      "description": ""
+      "description": "that's good"
     },
     "bleak": {
-      "description": ""
+      "description": "that's not good"
     },
     "banter": {
-      "description": ""
+      "description": "amusing talk"
+    },
+    "chat": {
+      "description": "good flowing conversation"
     },
     "banging": {
-      "description": ""
+      "description": "that's great!"
     },
     "rate": {
-      "description": ""
+      "description": "that's really great!"
+    },
+    "back yourself": {
+      "description": "you hold yourself in high regard"
     },
     "sick": {
-      "description": ""
+      "description": "that's really great!"
     },
     "bait": {
       "description": ""
     },
     "mug": {
-      "description": ""
+      "description": "a fool"
     },
     "sort": {
-      "description": ""
+      "description": "beautiful or good looking person"
     },
     "agg": {
-      "description": ""
+      "description": "aggrevation, hassle"
     },
     "pull them": {
-      "description": ""
+      "description": "have a talk with them alone"
     },
     "jump ship": {
-      "description": ""
+      "description": "quickly move from one person to another"
     },
     "bit of me": {
-      "description": ""
+      "description": "[the person] is your type"
     },
     "extra": {
       "description": ""
     },
     "snakey": {
-      "description": ""
+      "description": "talking behind your back"
     },
     "melt": {
-      "description": ""
+      "description": "a wimp"
     },
     "salty": {
       "description": ""
@@ -58,7 +64,7 @@
       "description": ""
     },
     "on paper": {
-      "description": ""
+      "description": "my type"
     },
     "crack on": {
       "description": ""
