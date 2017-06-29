@@ -28,16 +28,18 @@ getRandomWord = () => {
 
 getBlocks = () => {
   var wordArray = []
-  while (wordArray.length < 12) {
+  var checkArray = []
+  while (wordArray.length < 16) {
     var randomWord = getRandomWord()
-    console.log('++ randomWord', randomWord.word)
-    console.log('++wordArray', wordArray)
-    if (!_.includes(wordArray, randomWord.word)) {
-      console.log('++ does not exist')
+    if (!_.includes(checkArray, randomWord.word)) {
+      checkArray.push(randomWord.word)
       wordArray.push(randomWord)
     }
   }
-  return wordArray
+  return {
+    words: checkArray,
+    all: wordArray
+  }
 }
 
 app.get('/', (req, res) => {
@@ -48,12 +50,13 @@ app.get('/', (req, res) => {
 
 app.get('/bingo/', (req, res) => {
   var getNewBlocks = getBlocks()
-  var blocks = {
-    blocks: getNewBlocks
+  if (_.isUndefined(req.cookies)) {
+    res.cookie('loveIslandBingo' , getNewBlocks.words, {expire : new Date() + 3600}).send('Cookie is set')
+  } else {
+    var blocks = {
+      blocks: getNewBlocks.all
+    }
   }
-  // if (_.isUndefined(req.cookies)) {
-  //   res.cookie('loveIslandBingo' , '', {expire : new Date() + 3600}).send('Cookie is set')
-  // }
   res.render(
     'bingo', blocks
   )

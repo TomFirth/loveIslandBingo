@@ -1,11 +1,18 @@
 html, body {
   margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  margin: 10px;
 }
 
 .bingo {
   border-radius: 5px;
   background-color: #FF0000;
   color: #FFFFFF;
+  padding: 10px 20px;
+  text-decoration: none;
 }
 
 section {
@@ -16,11 +23,9 @@ section {
 
 div {
   float: left;
-  width: 25%;
+  position: relative;
+  width: 20%;
   height: 25%;
-  text-align: center;
-  vertical-align: middle;
-  display: table-cell;
   border: 1px solid #000000;
 }
 
