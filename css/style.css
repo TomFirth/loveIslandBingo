@@ -21,11 +21,12 @@ section {
   height: 50%;
 }
 
-div {
+input[type=submit] {
   float: left;
   position: relative;
   width: 20%;
-  height: 25%;
+  height: 29%;
+  background: #FFFFFF;
   border: 1px solid #000000;
 }
 
