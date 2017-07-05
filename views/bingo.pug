@@ -1,8 +1,11 @@
 include ./partials/header.pug
 
 section
-  //- main content
   each word, index in words
     form(method='POST' action='/bingo')
       input(type='hidden', value=word, name=word)
       input(type='submit', value=word, title=word)
+      if (used.indexOf(word) > -1)
+        input(type='submit', value=word, title=word)
+      else
+        input(type='submit', class='dab', value=word, title=word)

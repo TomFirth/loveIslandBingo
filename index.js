@@ -15,6 +15,7 @@ app.locals.basedir = path.join(__dirname, '/')
 
 var port = process.env.PORT || 8080
 var blocks = {}
+var wordArray, checkArray, usedArray = []
 
 getRandomWord = () => {
   var result;
@@ -31,8 +32,6 @@ getRandomWord = () => {
 }
 
 getBlocks = () => {
-  var wordArray = []
-  var checkArray = []
   while (wordArray.length < 25) {
     var randomWord = getRandomWord()
     if (!_.includes(checkArray, randomWord.word)) {
@@ -55,46 +54,49 @@ parseCookies = (request) => {
   return list
 }
 
-setCookie = (res) => {
-  var getNewBlocks = getBlocks()
-  res.cookie('loveIslandBingo' , JSON.stringify(getNewBlocks.all), {expire: new Date() + 3600})
+setCookie = (res, content) => {
+  res.cookie('loveIslandBingo' , JSON.stringify(content), {expire: new Date() + 3600})
 }
 
-checkOld = (req, res) => {
+checkOld = (req, res, used) => {
   var cookies = parseCookies(req)
   if (_.isUndefined(cookies['loveIslandBingo'])) {
-    setCookie(res)
+    var content = getBlocks()
+    setCookie(content.all)
   }
   var decodedCookie = JSON.parse(decodeURIComponent(cookies['loveIslandBingo']))
+  if(!_.isNull(used)) {
+    usedArray.push(used)
+  }
   return {
     words: decodedCookie.words,
     description: decodedCookie.description,
-    used: []
+    used: usedArray
   }
 }
 
 app.get('/', (req, res) => {
-  setCookie(res)
+  var content = getBlocks()
+  setCookie(content.all)
   res.render(
     'home', {}
   )
 })
 
 app.get('/bingo/', (req, res) => {
-  blocks = checkOld(req, res)
+  blocks = checkOld(req, res, null)
   res.render(
     'bingo', blocks
   )
 })
 
 app.post('/bingo', (req, res) => {
-  blocks = checkOld(req, res)
   var pressed = _.head(Object.keys(req.body))
   var index = blocks.words.indexOf(pressed)
-  blocks.used.push(index)
-  console.log(blocks)
+  var used = blocks.words[index]
+  blocks = checkOld(req, res, used)
   res.render(
-    'bingo', blocks
+    'bingo', { blocks: blocks, used: blocks.used }
   )
 })
 
