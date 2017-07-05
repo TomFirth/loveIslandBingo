@@ -2,8 +2,7 @@ include ./partials/header.pug
 
 section
   //- main content
-  each block in blocks
+  each word, index in words
     form(method='POST' action='/bingo')
-      input(type='hidden', name=block.word)
-      input(type='submit', value=block.word)
-      //- p.description= block.description
+      input(type='hidden', value=word, name=word)
+      input(type='submit', value=word, title=word)

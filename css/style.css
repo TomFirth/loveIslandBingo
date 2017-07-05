@@ -29,15 +29,3 @@ input[type=submit] {
   background: #FFFFFF;
   border: 1px solid #000000;
 }
-
-div:active {
-  /*add dab*/
-}
-
-div p.description {
-  /*small button top right*/
-}
-
-div p.description:hover {
-  /*display description*/
-}

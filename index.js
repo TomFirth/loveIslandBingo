@@ -2,8 +2,11 @@ var express = require('express')
 var app = express()
 var _ = require('lodash')
 var path = require('path')
+var bodyParser = require("body-parser")
 var cookieParser = require('cookie-parser')
 app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 var config = require('./config/default')
 
@@ -37,16 +40,14 @@ getBlocks = () => {
       wordArray.push(randomWord)
     }
   }
+  console.log('++ checkArray', checkArray)
   return {
-    words: checkArray,
     all: wordArray
   }
 }
 
 parseCookies = (request) => {
-  var list = {},
-    rc = request.headers.cookie
-
+  var list = {}, rc = request.headers.cookie
   rc && rc.split(';').forEach(( cookie ) => {
     var parts = cookie.split('=')
     list[parts.shift().trim()] = decodeURI(parts.join('='))
@@ -54,19 +55,26 @@ parseCookies = (request) => {
   return list
 }
 
+setCookie = (res) => {
+  var getNewBlocks = getBlocks()
+  res.cookie('loveIslandBingo' , JSON.stringify(getNewBlocks.all), {expire: new Date() + 3600})
+}
+
 checkOld = (req, res) => {
   var cookies = parseCookies(req)
   if (_.isUndefined(cookies['loveIslandBingo'])) {
-    var getNewBlocks = getBlocks()
-    res.cookie('loveIslandBingo' , JSON.stringify(getNewBlocks.words), {expire : new Date() + 3600}).send('Cookie is set')
+    setCookie(res)
   }
-  blocks = {
-    blocks: cookies['loveIslandBingo']
+  var decodedCookie = JSON.parse(decodeURIComponent(cookies['loveIslandBingo']))
+  return {
+    words: decodedCookie.words,
+    description: decodedCookie.description,
+    used: []
   }
-  return blocks
 }
 
 app.get('/', (req, res) => {
+  setCookie(res)
   res.render(
     'home', {}
   )
@@ -80,8 +88,11 @@ app.get('/bingo/', (req, res) => {
 })
 
 app.post('/bingo', (req, res) => {
-  // console.log('++ res', res)
   blocks = checkOld(req, res)
+  var pressed = _.head(Object.keys(req.body))
+  var index = blocks.words.indexOf(pressed)
+  blocks.used.push(index)
+  console.log(blocks)
   res.render(
     'bingo', blocks
   )
