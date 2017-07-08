@@ -1,11 +1,10 @@
 include ./partials/header.pug
 
-section
-  each word, index in words
+section 
+  each block, index in blocks
     form(method='POST' action='/bingo')
-      input(type='hidden', value=word, name=word)
-      input(type='submit', value=word, title=word)
-      if (used.indexOf(word) > -1)
-        input(type='submit', value=word, title=word)
+      input(type='hidden', value=block.word, name=block.word)
+      if (used.indexOf(block.word) > -1)
+        input(type='submit', class='dab', value=block.word, title=block.description)
       else
-        input(type='submit', class='dab', value=word, title=word)
+        input(type='submit', value=block.word, title=block.description)

@@ -17,7 +17,7 @@ h1 {
 
 section {
   margin: auto;
-  width: 50%;
+  width: 100%;
   height: 50%;
 }
 
@@ -28,4 +28,8 @@ input[type=submit] {
   height: 29%;
   background: #FFFFFF;
   border: 1px solid #000000;
+}
+
+input[type=submit].dab {
+  background: #FF0000;
 }
