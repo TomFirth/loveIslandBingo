@@ -5,6 +5,11 @@ html, body {
 
 h1 {
   margin: 10px;
+  text-align: center;
+}
+
+p {
+  padding: 0 25%;
 }
 
 .bingo {
@@ -31,5 +36,5 @@ input[type=submit] {
 }
 
 input[type=submit].dab {
-  background: #FF0000;
+  background-color: #FF0000;
 }

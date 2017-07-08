@@ -2,7 +2,7 @@ var express = require('express')
 var app = express()
 var _ = require('lodash')
 var path = require('path')
-var bodyParser = require("body-parser")
+var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -15,16 +15,17 @@ app.locals.basedir = path.join(__dirname, '/')
 
 var port = process.env.PORT || 8080
 var blocks = {}
+var list = {}
 var wordArray = []
 var checkArray = []
 var usedArray = []
 
-getRandomWord = () => {
-  var result;
-  var count = 0;
+var getRandomWord = () => {
+  var result
+  var count = 0
   for (var prop in config.words) {
-    if (Math.random() < 1/++count) {
-      result = prop;
+    if (Math.random() < 1 / ++count) {
+      result = prop
     }
   }
   return {
@@ -33,7 +34,7 @@ getRandomWord = () => {
   }
 }
 
-getBlocks = () => {
+var getBlocks = () => {
   while (wordArray.length < 25) {
     var randomWord = getRandomWord()
     if (!_.includes(checkArray, randomWord.word)) {
@@ -41,33 +42,32 @@ getBlocks = () => {
       wordArray.push(randomWord)
     }
   }
-  console.log('++ checkArray', checkArray)
   return {
     all: wordArray
   }
 }
 
-parseCookies = (request) => {
-  var list = {}, rc = request.headers.cookie
-  rc && rc.split(';').forEach(( cookie ) => {
+var parseCookies = (request) => {
+  var rc = request.headers.cookie
+  rc && rc.split(';').forEach((cookie) => {
     var parts = cookie.split('=')
     list[parts.shift().trim()] = decodeURI(parts.join('='))
   })
   return list
 }
 
-setCookie = (res, content) => {
-  res.cookie('loveIslandBingo' , JSON.stringify(content), {expire: new Date() + 3600})
+var setCookie = (res, content) => {
+  res.cookie('loveIslandBingo', JSON.stringify(content), {expire: new Date() + 3600})
 }
 
-checkOld = (req, res, used) => {
+var checkOld = (req, res, used) => {
   var cookies = parseCookies(req)
   if (_.isUndefined(cookies['loveIslandBingo'])) {
     var content = getBlocks()
     setCookie(res, content.all)
   }
   var decodedCookie = JSON.parse(decodeURIComponent(cookies['loveIslandBingo']))
-  if(!_.isNull(used)) {
+  if (!_.isNull(used)) {
     usedArray.push(used)
   }
   return {
@@ -87,7 +87,7 @@ app.get('/', (req, res) => {
 app.get('/bingo/', (req, res) => {
   blocks = checkOld(req, res, null)
   res.render(
-    'bingo', { 
+    'bingo', {
       blocks: blocks.words,
       used: blocks.used
     }
@@ -98,14 +98,14 @@ app.post('/bingo/', (req, res) => {
   var pressed = _.head(Object.keys(req.body))
   blocks = checkOld(req, res, pressed)
   res.render(
-    'bingo', { 
-      blocks: blocks.words  ,
+    'bingo', {
+      blocks: blocks.words,
       used: blocks.used
     }
   )
 })
 
-if(!module.parent) {
+if (!module.parent) {
   app.listen(port)
   console.log('all your', port + ', r belong to us') // shoutout to the user
   exports = module.exports = app
